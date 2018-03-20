@@ -265,6 +265,12 @@ Error: com.orientechnologies.orient.core.exception.OConfigurationException: Data
 orientdb> exit
 ```
 
+The next step is to configure Hazelcast for OrientDB database replication.
+
+-- Work in progress --
+
+## Troubleshooting
+
 To delete the StatefulSets, PersistentVolumeClaims and Headless Service, you can run the following command.
 ```
 kubectl delete statefulset,pvc,svc -l service=orientdb
@@ -274,3 +280,4 @@ To delete the local volumes, you can run the following command.
 ```
 kubectl delete pv -l type=local
 ```
+

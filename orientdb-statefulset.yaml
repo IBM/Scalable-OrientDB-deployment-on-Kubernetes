@@ -1,0 +1,42 @@
+kind: StatefulSet
+apiVersion: "apps/v1beta1"
+metadata:
+  name: orientdbservice
+spec:
+  serviceName: orientdbservice
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        service: orientdb
+        type: container-deployment
+    spec:
+      containers:
+      - name: orientdbservice
+        image: orientdb:2.2.26
+        env:
+        - name: ORIENTDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: orientdb-pass
+              key: password.txt
+        ports:
+        - containerPort: 2424
+          name: port-binary
+        - containerPort: 2480
+          name: port-http
+        volumeMounts:
+        - mountPath: /orientdb/databases
+          name: orientdb-data
+          subPath: databases
+        - mountPath: /orientdb/backup
+          name: orientdb-data
+          subPath: backup
+  volumeClaimTemplates:
+  - metadata:
+      name: orientdb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
